@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hosanna Christian High School - Dashboard</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#800020">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Hosanna SMS">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="192x192" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiM4MDAwMjAiLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzgwMDAyMCIvPgo8c3ZnIHg9IjgiIHk9IjgiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        .header {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #800020;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        
+        .header h1 { color: #800020; font-size: 1.8rem; margin-bottom: 5px; }
+        .header p { color: #666; }
+
+        .stats { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 15px; 
+            margin-bottom: 20px; 
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-left: 4px solid #800020;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+        }
+        
+        .stat-card:hover { transform: translateY(-2px); }
+        
+        .stat-number { font-size: 2rem; font-weight: bold; color: #800020; }
+        .stat-label { color: #666; margin-top: 5px; }
+
+        .controls {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .btn {
+            background: #800020;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s ease;
+        }
+        
+        .btn:hover { background: #a00028; }
+
+        .data-table {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: auto;
+            border-radius: 8px;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #800020; color: white; font-weight: 500; }
+        tr:hover { background: #f8f9fa; }
+
+        .status-paid { background: #d4edda; color: #155724; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        .status-partial { background: #fff3cd; color: #856404; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        .status-pending { background: #f8d7da; color: #721c24; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+
+        .loading { text-align: center; padding: 40px; }
+        .spinner { 
+            border: 3px solid #f3f3f3; 
+            border-top: 3px solid #800020; 
+            border-radius: 50%; 
+            width: 30px; 
+            height: 30px; 
+            animation: spin 1s linear infinite; 
+            margin: 0 auto 10px; 
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .error, .success {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+
+        /* Enhanced Install Prompt */
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #800020, #a00028);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: none;
+            z-index: 1000;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(128, 0, 32, 0.3);
+            animation: pulse 2s infinite;
+            min-width: 250px;
+            text-align: center;
+        }
+
+        @keyframes pulse {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+
+        .install-prompt:hover {
+            background: linear-gradient(135deg, #a00028, #c00030);
+            animation: none;
+        }
+
+        /* Install Instructions Modal */
+        .install-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .install-modal.show {
+            display: flex;
+        }
+
+        .install-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .install-content h2 {
+            color: #800020;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .install-steps {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .install-steps li {
+            margin: 10px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #800020;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .device-instructions {
+            display: none;
+        }
+
+        .device-instructions.active {
+            display: block;
+        }
+
+        .currency { font-weight: 600; color: #28a745; }
+        .last-updated { text-align: center; margin-top: 20px; color: #666; font-size: 14px; }
+
+        /* Connection Status */
+        .connection-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 1000;
+        }
+
+        .connection-status.online {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .connection-status.offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .search-box { min-width: auto; }
+            .stats { grid-template-columns: 1fr; }
+            .install-prompt {
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                transform: none;
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="connection-status" id="connectionStatus">🟢 Online</div>
+
+    <div class="container">
+        <div class="header">
+            <h1>📚 Hosanna Christian High School</h1>
+            <p>Student Management Dashboard</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalStudents">0</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalExpected">UGX 0</div>
+                <div class="stat-label">Expected Fees</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalPaid">UGX 0</div>
+                <div class="stat-label">Fees Collected</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalOutstanding">UGX 0</div>
+                <div class="stat-label">Outstanding Balance</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="collectionRate">0%</div>
+                <div class="stat-label">Collection Rate</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search students...">
+            <button class="btn" onclick="loadData()">🔄 Refresh</button>
+            <button class="btn" onclick="exportData()">📊 Export CSV</button>
+            <button class="btn" onclick="showInstallInstructions()">📱 Install App</button>
+        </div>
+
+        <div class="data-table">
+            <div id="loadingDiv" class="loading">
+                <div class="spinner"></div>
+                <p>Loading student data...</p>
+            </div>
+            <div id="errorDiv" class="error" style="display: none;"></div>
+            <table id="dataTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Class</th>
+                        <th>Expected Fees</th>
+                        <th>Paid</th>
+                        <th>Outstanding</th>
+                        <th>Payment %</th>
+                        <th>Status</th>
+                        <th>Parent Contact</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="last-updated" id="lastUpdated"></div>
+    </div>
+
+    <!-- Enhanced Install Prompt -->
+    <div class="install-prompt" id="installPrompt">
+        📱 Install Hosanna SMS App
+    </div>
+
+    <!-- Install Instructions Modal -->
+    <div class="install-modal" id="installModal">
+        <div class="install-content">
+            <button class="close-modal" onclick="closeInstallModal()">&times;</button>
+            <h2>📱 Install Hosanna SMS</h2>
+            <p>Add this app to your home screen for quick access!</p>
+            
+            <!-- Android Instructions -->
+            <div class="device-instructions" id="androidInstructions">
+                <h3>📱 For Android:</h3>
+                <ol class="install-steps">
+                    <li>Tap the menu button (⋮) in your browser</li>
+                    <li>Look for "Add to Home screen" or "Install app"</li>
+                    <li>Tap "Add" or "Install"</li>
+                    <li>The app icon will appear on your home screen</li>
+                </ol>
+                <p><strong>Alternative:</strong> Look for an "Install" banner at the bottom of your screen</p>
+            </div>
+
+            <!-- iOS Instructions -->
+            <div class="device-instructions" id="iosInstructions">
+                <h3>📱 For iPhone/iPad:</h3>
+                <ol class="install-steps">
+                    <li>Tap the Share button (□↑) in Safari</li>
+                    <li>Scroll down and find "Add to Home Screen"</li>
+                    <li>Tap "Add to Home Screen"</li>
+                    <li>Tap "Add" in the top right corner</li>
+                    <li>The app will appear on your home screen</li>
+                </ol>
+            </div>
+
+            <!-- Desktop Instructions -->
+            <div class="device-instructions" id="desktopInstructions">
+                <h3>💻 For Desktop:</h3>
+                <ol class="install-steps">
+                    <li>Look for an install icon (⊞) in your address bar</li>
+                    <li>Click the install icon or "Install" button</li>
+                    <li>Click "Install" in the popup</li>
+                    <li>The app will open in its own window</li>
+                </ol>
+                <p><strong>Chrome:</strong> Menu → More tools → Create shortcut</p>
+            </div>
+
+            <button class="btn" onclick="tryAutoInstall()" style="margin-top: 20px;">
+                🚀 Try Auto Install
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let studentsData = [];
+        let deferredPrompt;
+        
+        // Replace with your Google Apps Script URL
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwY4sM-NCUMzhryRTdmpBT2EYgtat37iYV7sRhO2eF1v6jbEwD3NvyCLxmFCTP0iwQVDg/exec';
+
+        // PWA Manifest (inline to avoid file serving issues)
+        const manifestData = {
+            "name": "Hosanna Christian High School Dashboard",
+            "short_name": "Hosanna SMS",
+            "description": "Student Management System Dashboard for Hosanna Christian High School",
+            "start_url": window.location.pathname,
+            "display": "standalone",
+            "background_color": "#800020",
+            "theme_color": "#800020",
+            "orientation": "portrait-primary",
+            "icons": [
+                {
+                    "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiM4MDAwMjAiLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+",
+                    "sizes": "192x192",
+                    "type": "image/svg+xml",
+                    "purpose": "any maskable"
+                },
+                {
+                    "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iNjQiIGZpbGw9IiM4MDAwMjAiLz4KPHN2ZyB4PSIxMjgiIHk9IjEyOCIgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0xMiAyTDEzLjA5IDguMjZMMjAgOUwxMy4wOSAxNS43NEwxMiAyMkwxMC45MSAxNS43NEw0IDlMMTAuOTEgOC4yNkwxMiAyWiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cjwvc3ZnPg==",
+                    "sizes": "512x512",
+                    "type": "image/svg+xml",
+                    "purpose": "any maskable"
+                }
+            ],
+            "categories": ["education", "productivity"],
+            "lang": "en"
+        };
+
+        // Create and inject manifest
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestURL;
+        document.head.appendChild(manifestLink);
+
+        window.addEventListener('load', () => {
+            loadData();
+            registerServiceWorker();
+            detectDevice();
+        });
+
+        // Enhanced PWA Installation
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallPrompt();
+        });
+
+        function showInstallPrompt() {
+            const installPrompt = document.getElementById('installPrompt');
+            installPrompt.style.display = 'block';
+            
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                if (installPrompt.style.display === 'block') {
+                    installPrompt.style.display = 'none';
+                }
+            }, 10000);
+        }
+
+        function detectDevice() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isIOS = /iphone|ipad|ipod/.test(userAgent);
+            const isAndroid = /android/.test(userAgent);
+            const isDesktop = !isIOS && !isAndroid;
+
+            // Show install prompt for all devices after a delay
+            setTimeout(() => {
+                if (!window.matchMedia('(display-mode: standalone)').matches) {
+                    showInstallPrompt();
+                }
+            }, 5000);
+        }
+
+        function showInstallInstructions() {
+            const modal = document.getElementById('installModal');
+            const userAgent = navigator.userAgent.toLowerCase();
+            
+            // Hide all instructions first  
+            document.querySelectorAll('.device-instructions').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Show appropriate instructions
+            if (/iphone|ipad|ipod/.test(userAgent)) {
+                document.getElementById('iosInstructions').classList.add('active');
+            } else if (/android/.test(userAgent)) {
+                document.getElementById('androidInstructions').classList.add('active');
+            } else {
+                document.getElementById('desktopInstructions').classList.add('active');
+            }
+
+            modal.classList.add('show');
+        }
+
+        function closeInstallModal() {
+            document.getElementById('installModal').classList.remove('show');
+        }
+
+        async function tryAutoInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                
+                if (outcome === 'accepted') {
+                    showSuccess('App installed successfully! 🎉');
+                    closeInstallModal();
+                    document.getElementById('installPrompt').style.display = 'none';
+                } else {
+                    showError('Installation cancelled. You can try the manual steps above.');
+                }
+                
+                deferredPrompt = null;
+            } else {
+                showError('Auto-install not available. Please follow the manual steps above.');
+            }
+        }
+
+        // Click handlers
+        document.getElementById('installPrompt').addEventListener('click', showInstallInstructions);
+
+        // Close modal when clicking outside
+        document.getElementById('installModal').addEventListener('click', (e) => {
+            if (e.target.id === 'installModal') {
+                closeInstallModal();
+            }
+        });
+
+        // Service Worker Registration
+        async function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    // Create service worker inline
+                    const swCode = `
+                        const CACHE_NAME = 'hosanna-dashboard-v1.3';
+                        const urlsToCache = ['/'];
+
+                        self.addEventListener('install', (event) => {
+                            event.waitUntil(
+                                caches.open(CACHE_NAME)
+                                    .then((cache) => cache.addAll(urlsToCache))
+                                    .then(() => self.skipWaiting())
+                            );
+                        });
+
+                        self.addEventListener('activate', (event) => {
+                            event.waitUntil(
+                                caches.keys().then((cacheNames) => {
+                                    return Promise.all(
+                                        cacheNames.map((cacheName) => {
+                                            if (cacheName !== CACHE_NAME) {
+                                                return caches.delete(cacheName);
+                                            }
+                                        })
+                                    );
+                                }).then(() => self.clients.claim())
+                            );
+                        });
+
+                        self.addEventListener('fetch', (event) => {
+                            if (!event.request.url.startsWith(self.location.origin)) {
+                                return;
+                            }
+                            
+                            event.respondWith(
+                                fetch(event.request)
+                                    .then((response) => {
+                                        if (response.status === 200) {
+                                            const responseClone = response.clone();
+                                            caches.open(CACHE_NAME)
+                                                .then((cache) => {
+                                                    cache.put(event.request, responseClone);
+                                                });
+                                        }
+                                        return response;
+                                    })
+                                    .catch(() => {
+                                        return caches.match(event.request)
+                                            .then((response) => {
+                                                return response || new Response('Offline', {
+                                                    status: 503,
+                                                    statusText: 'Service Unavailable'
+                                                });
+                                            });
+                                    })
+                            );
+                        });
+                    `;
+
+                    const swBlob = new Blob([swCode], {type: 'application/javascript'});
+                    const swURL = URL.createObjectURL(swBlob);
+                    
+                    const registration = await navigator.serviceWorker.register(swURL);
+                    console.log('Service Worker registered successfully:', registration);
+                } catch (error) {
+                    console.error('Service Worker registration failed:', error);
+                }
+            }
+        }
+
+        // Connection Status
+        function updateConnectionStatus() {
+            const status = document.getElementById('connectionStatus');
+            if (navigator.onLine) {
+                status.className = 'connection-status online';
+                status.textContent = '🟢 Online';
+            } else {
+                status.className = 'connection-status offline';
+                status.textContent = '🔴 Offline';
+            }
+        }
+
+        window.addEventListener('online', () => {
+            updateConnectionStatus();
+            loadData();
+        });
+        
+        window.addEventListener('offline', updateConnectionStatus);
+
+        // Data loading and display functions
+        async function loadData() {
+            showLoading(true);
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL + '?action=getStudents');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success && data.students) {
+                    studentsData = data.students;
+                    displayData(studentsData);
+                    updateStats(data.summary);
+                    showLoading(false);
+                    document.getElementById('lastUpdated').textContent = 
+                        `Last updated: ${new Date().toLocaleString()}`;
+                } else {
+                    throw new Error(data.error || 'No data received');
+                }
+
+            } catch (error) {
+                showError(`Unable to load data: ${error.message}`);
+                showLoading(false);
+            }
+        }
+
+        function displayData(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            data.forEach(student => {
+                const row = tbody.insertRow();
+                
+                let statusClass = 'status-pending';
+                let statusText = 'Pending';
+                
+                if (student.paymentPercentage >= 100) {
+                    statusClass = 'status-paid';
+                    statusText = 'Paid';
+                } else if (student.paymentPercentage > 0) {
+                    statusClass = 'status-partial';
+                    statusText = 'Partial';
+                }
+                
+                row.innerHTML = `
+                    <td><strong>${student.studentId || 'N/A'}</strong></td>
+                    <td>${student.fullName || 'N/A'}</td>
+                    <td>${student.class || 'N/A'}</td>
+                    <td class="currency">UGX ${formatNumber(student.totalExpectedFees || 0)}</td>
+                    <td class="currency">UGX ${formatNumber(student.totalPaidFees || 0)}</td>
+                    <td class="currency">UGX ${formatNumber(student.outstandingBalance || 0)}</td>
+                    <td><strong>${student.paymentPercentage || 0}%</strong></td>
+                    <td><span class="${statusClass}">${statusText}</span></td>
+                    <td>${student.parentContact || 'N/A'}</td>
+                `;
+            });
+        }
+
+        function updateStats(summary) {
+            if (!summary) return;
+            
+            document.getElementById('totalStudents').textContent = summary.totalStudents || 0;
+            document.getElementById('totalExpected').textContent = `UGX ${formatNumber(summary.totalExpectedFees || 0)}`;
+            document.getElementById('totalPaid').textContent = `UGX ${formatNumber(summary.totalPaidFees || 0)}`;
+            document.getElementById('totalOutstanding').textContent = `UGX ${formatNumber(summary.totalOutstandingBalance || 0)}`;
+            document.getElementById('collectionRate').textContent = `${summary.collectionRate || 0}%`;
+        }
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat().format(num);
+        }
+
+        function showLoading(show) {
+            document.getElementById('loadingDiv').style.display = show ? 'block' : 'none';
+            document.getElementById('dataTable').style.display = show ? 'none' : 'table';
+            document.getElementById('errorDiv').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorDiv');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            showLoading(false);
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success';
+            successDiv.textContent = message;
+            document.querySelector('.container').insertBefore(successDiv, document.querySelector('.header').nextSibling);
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 5000);
+        }
+
+        function exportData() {
+            if (studentsData.length === 0) {
+                alert('No data to export');
+                return;
+            }
+
+            const headers = ['Student ID', 'Full Name', 'Class', 'Expected Fees', 'Paid Fees', 'Outstanding', 'Payment %', 'Status', 'Parent Contact'];
+            const csvContent = [
+                headers.join(','),
+                ...studentsData.map(row => [
+                    row.studentId || '',
+                    `"${row.fullName || ''}"`,
+                    row.class || '',
+                    row.totalExpectedFees || 0,
+                    row.totalPaidFees || 0,
+                    row.outstandingBalance || 0,
+                    row.paymentPercentage || 0,
+                    row.paymentStatus || '',
+                    row.parentContact || ''
+                ].join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `hosanna_students_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredData = studentsData.filter(student => 
+                (student.fullName || '').toLowerCase().includes(searchTerm) ||
+                (student.studentId || '').toLowerCase().includes(searchTerm) ||
+                (student.class || '').toLowerCase().includes(searchTerm)
+            );
+            displayData(filteredData);
+        });
+
+        // Auto refresh every 5 minutes
+        setInterval(loadData, 300000);
+
+        // Initialize connection status
+        updateConnectionStatus();
+
+        // App installed detection
+        window.addEventListener('appinstalled', () => {
+            showSuccess('Hosanna SMS app installed successfully! 🎉');
+            document.getElementById('installPrompt').style.display = 'none';
+        });
+
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'r':
+                        e.preventDefault();
+                        loadData();
+                        break;
+                    case 'f':
+                        e.preventDefault();
+                        document.getElementById('searchBox').focus();
+                        break;
+                    case 'e':
+                        e.preventDefault();
+                        exportData();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
